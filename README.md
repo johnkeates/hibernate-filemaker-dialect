@@ -1,12 +1,32 @@
 ## Integrating FileMaker with Spring JPA/Hibernate HowTo
 
-The FileMakerDialect.class was cretaed by John Keates https://github.com/johnkeates/hibernate-filemaker-dialect, 
-this is just an implementation
+The FileMakerDialect.class was cretaed by John Keates, 
+Forked from: https://github.com/johnkeates/hibernate-filemaker-dialect
+
+This is just an implementation note.
 
 Add FileMaker JDBC dirver to the classpath:
-(provided by FileMaker Inc, No Maven dependency known to date)
+(provided by FileMaker Inc. http://www.filemaker.com
+
+I do not know any Maven source.
 
 fmjdbc.jar
+
+Add the following dependencies to your Maven project:
+```xml
+<!-- hikari -->
+<dependency>
+    <groupId>com.zaxxer</groupId>
+    <artifactId>HikariCP</artifactId>
+</dependency>
+
+<!-- needed for Hikari Configuration -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+</dependency>
+```
 
 setup the following properties in application.properties
 
@@ -38,3 +58,7 @@ logging.level.org.hibernate.SQL=DEBUG
 logging.level.org.hibernate.type=TRACE
 
 ```
+
+NOTE: FileMaker SQL support is very poor, not supporting in any way reverse engeneering the database schema (maybe because FileMaker databases do not have 'schema') and constrains (can't see the defined relationships).
+
+When generatinig entities from the database connection, do not forget to set all the @Id columns and create the required associations, because Hibernate can''t look inside.
