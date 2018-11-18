@@ -6,13 +6,17 @@ Forked from: https://github.com/johnkeates/hibernate-filemaker-dialect
 This is just an implementation note.
 
 Add FileMaker JDBC dirver to the classpath:
-(provided by FileMaker Inc. http://www.filemaker.com
+(provided by FileMaker Inc. http://www.filemaker.com)
 
-I do not know any Maven source.
+> fmjdbc.jar
 
-fmjdbc.jar
+I've tested this implemntation with the driver versions provided with FileMaker 12~17 and aparently all worked identically (fine)
 
-Add the following dependencies to your Maven project:
+I do not know any available Maven repo to date (added a todo to fix this).
+
+#### Configure your pom.xml
+
+Add the following dependencies to your Maven project in order to provide namespaces for required configurations:
 ```xml
 <!-- hikari -->
 <dependency>
@@ -28,7 +32,9 @@ Add the following dependencies to your Maven project:
 </dependency>
 ```
 
-setup the following properties in application.properties
+#### Configure Spring properties
+
+Setup the following properties in the resources/application.properties file
 
 ```properties
 # Hibernate did not recognize itsels which database is FileMaker
@@ -50,7 +56,7 @@ spring.jpa.properties.hibernate.dialect = nl.keates.filemaker.hibernate.dialect.
 # FM jdbc driver does not allow schema modifications, so disable updates
 spring.jpa.hibernate.ddl-auto = none
 
-# FM jdbc driver does not allow "SELECT 1" default connectivity test, so setup this
+# FM jdbc driver does not allow "SELECT 1" default connectivity test, so use the fillowing
 spring.datasource.hikari.connection-test-query=SELECT p.* FROM FileMaker_Tables p
 
 # setup other properties as usual, like the following
@@ -59,6 +65,16 @@ logging.level.org.hibernate.type=TRACE
 
 ```
 
-NOTE: FileMaker SQL support is very poor, not supporting in any way reverse engeneering the database schema (maybe because FileMaker databases do not have 'schema') and constrains (can't see the defined relationships).
+#### Drawbacks, issues & fixes to FileMasker Driver limitations
 
-When generatinig entities from the database connection, do not forget to set all the @Id columns and create the required associations, because Hibernate can''t look inside.
+FileMaker SQL support is very poor, not supporting in any way reverse engeneering the database schema (maybe because FileMaker databases do not have 'schema') and constrains (can't see the defined relationships).
+
+When generatinig entities from the database connection, do not forget to set all the @Id columns and create the required associations, because Hibernate can''t detect key columns nor constrains.
+
+Any relationship must be creted manually and JPA/Hibernate annotations fixed.
+
+#### ToDo
+
+* Create a Maven repository for John's **nl.keates.filemaker.hibernate.dialect.FileMakerDialect** class
+* Add yml configuration template for dev/prod application property files in a common **jhipster** deployment
+
