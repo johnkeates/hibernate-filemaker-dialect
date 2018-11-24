@@ -1,4 +1,4 @@
-## Integrating FileMaker with Spring JPA/Hibernate HowTo
+## Integrating FileMaker with Spring JPA/Hibernate
 
 The FileMakerDialect.class was cretaed by John Keates, 
 Forked from: https://github.com/johnkeates/hibernate-filemaker-dialect
@@ -10,7 +10,7 @@ Add FileMaker JDBC dirver to the classpath:
 
 > fmjdbc.jar
 
-I've tested this implemntation with the driver versions provided with FileMaker 12~17 and aparently all worked identically (fine)
+I've tested this implementation with the driver versions provided with FileMaker 12~17 and aparently all worked identically (fine)
 
 I do not know any available Maven repo to date (added a todo to fix this).
 
@@ -34,7 +34,7 @@ Add the following dependencies to your Maven project in order to provide namespa
 
 #### Configure Spring properties
 
-Setup the following properties in the resources/application.properties file
+Setup the following properties in the *resources/application.properties* file
 
 ```properties
 # Hibernate did not recognize itsels which database is FileMaker
