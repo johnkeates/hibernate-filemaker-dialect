@@ -37,7 +37,7 @@ Add the following dependencies to your Maven project in order to provide namespa
 Setup the following properties in the *resources/application.properties* file
 
 ```properties
-# Hibernate did not recognize itsels which database is FileMaker
+# Hibernate did not recognize itself which database is FileMaker
 # so help it providing the driver to be used
 spring.datasource.driver-class-name=com.filemaker.jdbc.Driver
 
@@ -56,7 +56,7 @@ spring.jpa.properties.hibernate.dialect = nl.keates.filemaker.hibernate.dialect.
 # FM jdbc driver does not allow schema modifications, so disable updates
 spring.jpa.hibernate.ddl-auto = none
 
-# FM jdbc driver does not allow "SELECT 1" default connectivity test, so use the fillowing
+# FM jdbc driver does not allow "SELECT 1" default connectivity test, so use the following
 spring.datasource.hikari.connection-test-query=SELECT p.* FROM FileMaker_Tables p
 
 # setup other properties as usual, like the following
@@ -69,12 +69,12 @@ logging.level.org.hibernate.type=TRACE
 
 FileMaker SQL support is very poor, not supporting in any way reverse engeneering the database schema (maybe because FileMaker databases do not have 'schema') and constrains (can't see the defined relationships).
 
-When generatinig entities from the database connection, do not forget to set all the @Id columns and create the required associations, because Hibernate can''t detect key columns nor constrains.
+When generatinig entities from the database connection, do not forget to set all the @Id columns and create the required associations, because Hibernate can't detect key columns nor constrains.
 
-Any relationship must be creted manually and JPA/Hibernate annotations fixed.
+Any relationship must be created manually and JPA/Hibernate annotations fixed.
 
 #### ToDo
 
-* Create a Maven repository for John's **nl.keates.filemaker.hibernate.dialect.FileMakerDialect** class
-* Add yml configuration template for dev/prod application property files in a common **jhipster** deployment
+- [ ] Create a Maven repository for John's **nl.keates.filemaker.hibernate.dialect.FileMakerDialect** class
+- [ ] Add yml configuration template for dev/prod application property files in a common **jhipster** deployment
 
