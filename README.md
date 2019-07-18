@@ -65,7 +65,7 @@ logging.level.org.hibernate.type=TRACE
 
 ```
 
-#### Drawbacks, issues & fixes to FileMasker Driver limitations
+#### Drawbacks, issues & fixes to FileMaker JDBC Driver limitations
 
 FileMaker SQL support is very poor, not supporting in any way reverse engeneering the database schema (maybe because FileMaker databases do not have 'schema') and constrains (can't see the defined relationships).
 
