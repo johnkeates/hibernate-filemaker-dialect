@@ -30,6 +30,7 @@ import org.hibernate.type.DoubleType;
 import org.hibernate.type.StringType;
 import org.hibernate.type.TimeType;
 import org.hibernate.type.TimestampType;
+import org.hibernate.type.LongType;
 
 public class FileMakerDialect extends Dialect {
 	private static StringType STRING = StringType.INSTANCE;
@@ -38,6 +39,7 @@ public class FileMakerDialect extends Dialect {
     private static TimeType TIME = TimeType.INSTANCE;
 	private static TimestampType TIMESTAMP = TimestampType.INSTANCE;
 	private static BlobType BLOB = BlobType.INSTANCE;
+    private static BlobType LONG = LongType.INSTANCE;
 	
     public FileMakerDialect() {
         // Register types
@@ -52,7 +54,7 @@ public class FileMakerDialect extends Dialect {
 
         registerFunction("sum", new StandardSQLFunction("sum", DOUBLE));
         registerFunction("avg", new StandardSQLFunction("avg", DOUBLE));
-        registerFunction("count", new StandardSQLFunction("count", DOUBLE));
+        registerFunction("count", new StandardSQLFunction("count", LONG));
         registerFunction("chr", new StandardSQLFunction("chr", STRING));
         registerFunction("current_user", new StandardSQLFunction("current_user", STRING));
         registerFunction("dayname", new StandardSQLFunction("dayname", STRING));
@@ -109,6 +111,35 @@ public class FileMakerDialect extends Dialect {
 
     }
 
+    @Override
+    public LimitHandler getLimitHandler() {
+
+        return new AbstractLimitHandler() {
+            @Override
+            public boolean supportsLimit() {
+                return true;
+            }
+
+            @Override
+            public String processSql(String sql, RowSelection selection) {
+
+                String soff = String.format(" offset %d rows /*?*/", selection.getFirstRow());
+                String slim = String.format(" fetch first %d rows only /*?*/", selection.getMaxRows());
+                StringBuilder sb = (new StringBuilder(sql.length() + soff.length() + slim.length())).append(sql);
+
+                if (LimitHelper.hasFirstRow(selection)) {
+                    sb.append(soff);
+                }
+
+                if (LimitHelper.hasMaxRows(selection)) {
+                    sb.append(slim);
+                }
+
+                return sb.toString();
+            }
+
+        };
+    }
 
     public boolean dropConstraints() {
         return false;
@@ -126,8 +157,9 @@ public class FileMakerDialect extends Dialect {
         return false;
     }
 
-
-    public boolean supportsLockTimeouts() { return false; }
+    public boolean supportsLockTimeouts() { 
+        return false; 
+    }
 
     public boolean canCreateSchema() {
         return false;
@@ -143,10 +175,6 @@ public class FileMakerDialect extends Dialect {
 
     public boolean supportsCurrentTimestampSelection() {
         return true;
-    }
-
-    public boolean supportsLimit() {
-        return false;
     }
 
     public boolean supportsOuterJoinForUpdate() {
