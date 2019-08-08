@@ -39,7 +39,7 @@ public class FileMakerDialect extends Dialect {
     private static TimeType TIME = TimeType.INSTANCE;
 	private static TimestampType TIMESTAMP = TimestampType.INSTANCE;
 	private static BlobType BLOB = BlobType.INSTANCE;
-    private static BlobType LONG = LongType.INSTANCE;
+    private static LongType LONG = LongType.INSTANCE;
 	
     public FileMakerDialect() {
         // Register types
